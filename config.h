@@ -1,19 +1,24 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 5;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 15;        /* gaps between windows */
+static const unsigned int snap      = 26;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10", "JoyPixels:truetype:scale=11"  };
 static const char dmenufont[]       = "monospace:size=10";
 
-static const char col_gray1[]       = "#282828";
+// background color
+static const char col_gray1[]       = "#1d2021";
+// inactive window border color
 static const char col_gray2[]       = "#444444";
+// font color
 static const char col_gray3[]       = "#a89984";
+// current tag and current window font color
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#4d6e4e";
+// Tab bar second color and active window border color
+static const char col_cyan[]        = "#689d6a";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -39,9 +44,9 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "",      tile },    /* first entry is default */
+	{ "",      NULL },    /* no layout function means floating behavior */
+	{ "",      monocle },
 };
 
 /* key definitions */
