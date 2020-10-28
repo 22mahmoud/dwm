@@ -1,5 +1,9 @@
 #include <X11/XF86keysym.h>
 
+/* Constants */
+#define TERMINAL "st"
+#define TERMCLASS "st-256color"
+
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 15;        /* gaps between windows */
@@ -121,6 +125,8 @@ static Key keys[] = {
 
 	{ 0, XF86XK_MonBrightnessUp,	  spawn,		SHCMD("brightness inc") },
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("brightness dec") },
+
+  { MODKEY|ShiftMask,		XK_n,		  spawn,		SHCMD(TERMINAL " -f 'mono:pixelsize=20:antialias=true:autohint=true' -e newsboat") },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
