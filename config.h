@@ -7,7 +7,7 @@
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 15;        /* gaps between windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int snap      = 60;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -72,11 +72,9 @@ static const char *dmenucmd[] = {
   "dmenu_run", 
   "-f",
   "-i",
-  "-l", "10",
-  "-h", "36",
-  "-bw", "2",
+  "-l", "12",
+  "-h", "18",
   "-m", dmenumon, 
-  "-fn", dmenufont, 
    NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
@@ -89,6 +87,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browser } },
+
 	{ MODKEY,                       XK_t,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -127,6 +126,9 @@ static Key keys[] = {
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("brightness dec") },
 
   { MODKEY|ShiftMask,		XK_n,		  spawn,		SHCMD(TERMINAL " -f 'mono:pixelsize=20:antialias=true:autohint=true' -e newsboat") },
+  { MODKEY,		          XK_e,		  spawn,		SHCMD("d-emoji") },
+  { MODKEY,		          XK_p,		  spawn,		SHCMD("play-mpv") },
+  { MODKEY,		          XK_n,		  spawn,		SHCMD(TERMINAL " -e nnn -c") },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
