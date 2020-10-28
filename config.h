@@ -68,8 +68,6 @@ static const char *dmenucmd[] = {
   "dmenu_run", 
   "-f",
   "-i",
-  "-c",
-  "-g", "1",
   "-l", "10",
   "-h", "36",
   "-bw", "2",
