@@ -79,7 +79,10 @@ static const char *dmenucmd[] = {
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
-static const char *browser[] = { "brave-browser-nightly", NULL };
+static const char *browser[] = { "brave", NULL };
+static const char *browser_incognito[] = { "brave", "--incognito", NULL };
+  
+
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -87,6 +90,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browser } },
+	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = browser_incognito } },
+
 
 	{ MODKEY,                       XK_t,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -126,6 +131,7 @@ static Key keys[] = {
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("brightness dec") },
 
   { MODKEY|ShiftMask,		XK_n,		  spawn,		SHCMD(TERMINAL " -f 'mono:pixelsize=20:antialias=true:autohint=true' -e newsboat") },
+  { MODKEY,		          XK_m,		  spawn,		SHCMD(TERMINAL " -f 'mono:pixelsize=15:antialias=true:autohint=true' -e neomutt") },
   { MODKEY,		          XK_e,		  spawn,		SHCMD("d-emoji") },
   { MODKEY,		          XK_p,		  spawn,		SHCMD("play-mpv") },
   { MODKEY,		          XK_n,		  spawn,		SHCMD(TERMINAL " -e nnn -c") },
@@ -139,7 +145,9 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
+
+	{ MODKEY|ShiftMask,             XK_c,     quit,           {0} },
+  { MODKEY|ShiftMask,		          XK_x,		  spawn,		      SHCMD("lockscreen") },
 };
 
 /* button definitions */
