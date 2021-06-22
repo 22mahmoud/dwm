@@ -1,4 +1,5 @@
 dwm
+*.diff
 config.h
 *.o
 *.orig
