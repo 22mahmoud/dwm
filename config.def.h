@@ -19,12 +19,11 @@ static int smartgaps          = 0;        /* 1 means no outer gap when there is 
 static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 
 static const char *fonts[]          =  {
-  "mono:pixelsize=13:antialias=true:autohint=true",
-  "JoyPixels:pixelsize=13:antialias=true:autohint=true",
+  "monospace:pixelsize=13:antialias=true:autohint=true",
+  "Noto Color Emoji:pixelsize=13:antialias=true:autohint=true",
   "Tajawal:pixelsize=13:antialias=true:autohint=true" 
 };
 
-static const char dmenufont[]       = "monospace:size=10";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
