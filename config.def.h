@@ -20,8 +20,6 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 
 static const char *fonts[]          =  {
   "monospace:pixelsize=13:antialias=true:autohint=true",
-  "Noto Color Emoji:pixelsize=13:antialias=true:autohint=true",
-  "Tajawal:pixelsize=13:antialias=true:autohint=true" 
 };
 
 static char normbgcolor[]           = "#222222";
