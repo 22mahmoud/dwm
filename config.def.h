@@ -36,6 +36,20 @@ static char *colors[][3] = {
        [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spnnn",  "-g",  "120x34", "-e", "nnn", NULL };
+const char *spcmd3[] = {"st", "-n", "sphtop", "-g", "120x34", "-e", "htop", NULL };
+static Sp scratchpads[] = {
+    /* name          cmd  */
+    {"spterm",      spcmd1},
+    {"spnnn",       spcmd2},
+    {"sphtop",      spcmd3},
+};
+
 /* tagging */
 static const char *tags[] = { "", "", "3", "4", "", "", "", "", "" };
 static const Rule rules[] = {
@@ -54,6 +68,9 @@ static const Rule rules[] = {
   { "discord",            NULL,       NULL,              1 << 7,      0,            0,          1,            -1       },
   { "TelegramDesktop",    NULL,       NULL,              1 << 7,      0,            0,          1,            -1       },
 
+  { NULL,		 "spterm",    NULL,             SPTAG(0),	1,          1,           1,           -1       },
+  { NULL,		 "spnnn",     NULL,             SPTAG(1),	1,          1,           0,           -1       },
+  { NULL,		 "sphtop",    NULL,             SPTAG(2),	1,          1,           1,           -1       },
 };
 
 /* layout(s) */
@@ -126,6 +143,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+
+	{ MODKEY|ShiftMask,             XK_Return, togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_n,      togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,             XK_h,	   togglescratch,  {.ui = 2 } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -149,7 +171,7 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
