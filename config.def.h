@@ -148,6 +148,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_n,      togglescratch,  {.ui = 1 } },
 	{ MODKEY|ShiftMask,             XK_h,	   togglescratch,  {.ui = 2 } },
 
+	{ MODKEY|ShiftMask,             XK_r,      xrdb,           {.v = NULL } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
