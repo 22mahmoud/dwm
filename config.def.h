@@ -7,17 +7,19 @@ static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "monospace:size=10";
 static const char *fonts[]          = { font };
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#005577";
-static char selbgcolor[]            = "#005577";
-static char *colors[][3] = {
-       /*               fg           bg           border   */
-       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+
+/* default base16-gruvbox theme */
+static char col_base00[]      = "#1d2021";
+static char col_base01[]      = "#3c3836";
+static char col_base02[]      = "#504945";
+static char col_base04[]      = "#bdae93";
+static char col_base0C[]      = "#8ec07c";
+static char col_base0D[]      = "#83a598";
+static char *colors[][3]      = {
+  [SchemeNorm] = { col_base04, col_base01, col_base02 },
+  [SchemeSel]  = { col_base00, col_base0D, col_base0C },
 };
+ 
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -65,20 +67,22 @@ static const char *termcmd[]  = { "st", NULL };
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-		{ "font",               STRING,  &font },
-		{ "normbgcolor",        STRING,  &normbgcolor },
-		{ "normbordercolor",    STRING,  &normbordercolor },
-		{ "normfgcolor",        STRING,  &normfgcolor },
-		{ "selbgcolor",         STRING,  &selbgcolor },
-		{ "selbordercolor",     STRING,  &selbordercolor },
-		{ "selfgcolor",         STRING,  &selfgcolor },
-		{ "borderpx",          	INTEGER, &borderpx },
-		{ "snap",          		  INTEGER, &snap },
-		{ "showbar",          	INTEGER, &showbar },
-		{ "topbar",          	  INTEGER, &topbar },
-		{ "nmaster",          	INTEGER, &nmaster },
-		{ "resizehints",       	INTEGER, &resizehints },
-		{ "mfact",      	 	    FLOAT,   &mfact },
+		{ "font",         STRING,  &font },
+
+    { "color0",       STRING,   &col_base00 },
+    { "color10",      STRING,   &col_base01 },
+    { "color11",      STRING,   &col_base02 },
+    { "color12",      STRING,   &col_base04 },
+    { "color6",       STRING,   &col_base0C },
+    { "color4",       STRING,   &col_base0D },
+
+		{ "borderpx",     INTEGER,  &borderpx },
+		{ "snap",         INTEGER,  &snap },
+		{ "showbar",      INTEGER,  &showbar },
+		{ "topbar",       INTEGER,  &topbar },
+		{ "nmaster",      INTEGER,  &nmaster },
+		{ "resizehints",  INTEGER,  &resizehints },
+		{ "mfact",      	FLOAT,    &mfact },
 };
 
 static Key keys[] = {
