@@ -73,7 +73,6 @@ ResourcePref resources[] = {
 
 		{ "borderpx",     INTEGER,  &borderpx },
 		{ "snap",         INTEGER,  &snap },
-		{ "gappx",        INTEGER,  &gappx },
 		{ "showbar",      INTEGER,  &showbar },
 		{ "topbar",       INTEGER,  &topbar },
 		{ "nmaster",      INTEGER,  &nmaster },
