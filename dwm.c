@@ -299,6 +299,7 @@ struct Pertag {
 	unsigned int sellts[LENGTH(tags) + 1]; /* selected layouts */
 	const Layout *ltidxs[LENGTH(tags) + 1][2]; /* matrix of tags and layouts indexes  */
 	int showbars[LENGTH(tags) + 1]; /* display bar for the current tag */
+  int gappx[LENGTH(tags) + 1]; /* border per tag */
 };
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
@@ -686,6 +687,8 @@ createmon(void)
 		m->pertag->sellts[i] = m->sellt;
 
 		m->pertag->showbars[i] = m->showbar;
+
+		m->pertag->gappx[i] = m->gappx;
 	}
 
 	return m;
@@ -1559,9 +1562,12 @@ void
 setgaps(const Arg *arg)
 {
 	if ((arg->i == 0) || (selmon->gappx + arg->i < 0))
-		selmon->gappx = 0;
-	else
-		selmon->gappx += arg->i;
+    selmon->gappx = selmon->pertag->gappx[selmon->pertag->curtag] = 0;
+	else {
+    selmon->gappx +=  arg->i;
+    selmon->pertag->gappx[selmon->pertag->curtag] += arg->i;
+  }
+
 	arrange(selmon);
 }
 
@@ -1827,6 +1833,7 @@ toggleview(const Arg *arg)
 
 		/* apply settings for this view */
 		selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag];
+		selmon->gappx = selmon->pertag->gappx[selmon->pertag->curtag];
 		selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
 		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
@@ -2154,6 +2161,7 @@ view(const Arg *arg)
 	selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag];
 	selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
 	selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
+	selmon->gappx = selmon->pertag->gappx[selmon->pertag->curtag];
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 	selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
 
