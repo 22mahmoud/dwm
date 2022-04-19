@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#define TERMCLASS "St"
+
 /* appearance */
 static unsigned int borderpx  = 1;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
@@ -26,18 +28,21 @@ static char *colors[][3]      = {
   [SchemeNorm] = { col_base04, col_base01, col_base02 },
   [SchemeSel]  = { col_base00, col_base0D, col_base0C },
 };
- 
 
 typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "60x60", "-e", "nnn", NULL };
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "100x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "nnn", "-c", NULL };
+const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-ql", NULL };
+const char *spcmd4[] = {"st", "-n", "sphtop", "-g", "150x34", "-e", "htop", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",   spcmd1},
 	{"spfm",     spcmd2},
+	{"spcalc",   spcmd3},
+	{"sphtop",   spcmd4},
 };
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
@@ -49,11 +54,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance   title           tags mask   isfloating  isterminal  noswallow   monitor */
-	{ "St",      NULL,      NULL,           0,          0,          1,           0,         -1 },
-	{ NULL,		  "spterm",		NULL,		        SPTAG(0),	  1,			    1,           1,         -1 },
-	{ NULL,		  "spfm",		  NULL,		        SPTAG(1),	  1,			    1,           1,         -1 },
-	{ NULL,      NULL,     "Event Tester",  0,          0,          0,           1,         -1 }, /* xev */
+	/* class     instance   title             tags mask   isfloating  isterminal   noswallow   monitor */
+	{ TERMCLASS,      NULL,       NULL,             0,          0,          1,           0,          -1 },
+	{ TERMCLASS,		  "spterm",		NULL,		          SPTAG(0),	  1,			    1,           1,          -1 },
+	{ TERMCLASS,		  "spfm",		  NULL,		          SPTAG(1),	  1,			    1,           1,          -1 },
+	{ TERMCLASS,		  "spcalc",		NULL,		          SPTAG(2),	  1,			    1,           1,          -1 },
+	{ TERMCLASS,		  "sphtop",		NULL,		          SPTAG(3),	  1,			    1,           1,          -1 },
+	{ NULL,           NULL,      "Event Tester",    0,          0,          0,           1,          -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -129,6 +136,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = GAP_TOGGLE} },
 	{ MODKEY|ShiftMask,            	XK_Return, togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,            	XK_n,      togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,            	XK_m,      togglescratch,  {.ui = 2 } },
+	{ MODKEY|ShiftMask,            	XK_h,      togglescratch,  {.ui = 3 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
