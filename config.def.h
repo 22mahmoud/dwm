@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMCLASS "St"
+#define MODKEY Mod4Mask
 
 /* appearance */
 static unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -33,6 +34,7 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
+
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "100x34", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "nnn", "-c", NULL };
 const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-ql", NULL };
@@ -54,13 +56,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance   title             tags mask   isfloating  isterminal   noswallow   monitor */
-	{ TERMCLASS,      NULL,       NULL,             0,          0,          1,           0,          -1 },
-	{ TERMCLASS,		  "spterm",		NULL,		          SPTAG(0),	  1,			    1,           1,          -1 },
-	{ TERMCLASS,		  "spfm",		  NULL,		          SPTAG(1),	  1,			    1,           1,          -1 },
-	{ TERMCLASS,		  "spcalc",		NULL,		          SPTAG(2),	  1,			    1,           1,          -1 },
-	{ TERMCLASS,		  "sphtop",		NULL,		          SPTAG(3),	  1,			    1,           1,          -1 },
-	{ NULL,           NULL,      "Event Tester",    0,          0,          0,           1,          -1 }, /* xev */
+	/* class            instance         title             tags mask   isfloating  isterminal   noswallow   monitor */
+	{ TERMCLASS,        NULL,            NULL,             0,          0,          1,           0,          -1 },
+	{ NULL,		         "spterm",	       NULL,		         SPTAG(0),	 1,			     1,           1,          -1 },
+	{ NULL,		         "spfm",		       NULL,		         SPTAG(1),	 1,			     1,           1,          -1 },
+	{ NULL,		         "spcalc",	       NULL,		         SPTAG(2),	 1,			     1,           1,          -1 },
+	{ NULL,		         "sphtop",	       NULL,		         SPTAG(3),	 1,			     1,           1,          -1 },
+	{ NULL,             NULL,           "Event Tester",    0,          0,          0,           1,          -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -75,14 +77,6 @@ static const Layout layouts[] = {
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
-
-/* key definitions */
-#define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /*
  * Xresources preferences to load at startup
@@ -106,48 +100,14 @@ ResourcePref resources[] = {
 
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY|ShiftMask,             XK_t,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_i,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_z,      zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
-	{ MODKEY,                       XK_s,      togglesticky,   {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_minus,  setgaps,        {.i = -5 } },
-	{ MODKEY,                       XK_equal,  setgaps,        {.i = +5 } },
-	{ MODKEY|ShiftMask,             XK_minus,  setgaps,        {.i = GAP_RESET } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = GAP_TOGGLE} },
-	{ MODKEY|ShiftMask,            	XK_Return, togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,            	XK_n,      togglescratch,  {.ui = 1 } },
-	{ MODKEY|ShiftMask,            	XK_m,      togglescratch,  {.ui = 2 } },
-	{ MODKEY|ShiftMask,            	XK_h,      togglescratch,  {.ui = 3 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_c,      quit,           {0} },
+	/* modifier                     key           function        argument */
+	{ 0,                            0,             NULL,         {0} },
+
+  /* scratchpads becaouse it crashs dwm with ipc */
+	{ MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,            	XK_n,         togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 2 } },
+	{ MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 3 } },
 };
 
 /* button definitions */
@@ -166,6 +126,12 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+void
+viewall(const Arg *arg)
+{
+	view(&((Arg){ .ui = ~0 }));
+}
+
 static const char *ipcsockpath = "/tmp/dwm.sock";
 static IPCCommand ipccommands[] = {
   IPCCOMMAND(  view,                1,      {ARG_TYPE_UINT}   ),
@@ -176,11 +142,16 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  focusmon,            1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  focusstack,          1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  zoom,                1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  togglefullscr,       1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  togglesticky,        1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  incnmaster,          1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  killclient,          1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  togglefloating,      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  setmfact,            1,      {ARG_TYPE_FLOAT}  ),
   IPCCOMMAND(  setlayoutsafe,       1,      {ARG_TYPE_PTR}    ),
+  IPCCOMMAND(  viewall,             1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  setgaps,             1,      {ARG_TYPE_SINT}   ),
+	IPCCOMMAND(  togglescratch,       1,      {ARG_TYPE_UINT}   ),
   IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
 };
 

@@ -46,7 +46,7 @@ typedef unsigned long Window;
 
 const char *DEFAULT_SOCKET_PATH = "/tmp/dwm.sock";
 static int sock_fd = -1;
-static unsigned int ignore_reply = 0;
+static unsigned int ignore_reply = 1;
 
 typedef enum IPCMessageType {
   IPC_TYPE_RUN_COMMAND = 0,
@@ -482,7 +482,7 @@ print_usage(const char *name)
   puts("  help                            Display this message");
   puts("");
   puts("Options:");
-  puts("  --ignore-reply                  Don't print reply messages from");
+  puts("  --reply                         print reply messages from");
   puts("                                  run_command and subscribe.");
   puts("");
 }
@@ -499,8 +499,8 @@ main(int argc, char *argv[])
   }
 
   int i = 1;
-  if (i < argc && strcmp(argv[i], "--ignore-reply") == 0) {
-    ignore_reply = 1;
+  if (i < argc && strcmp(argv[i], "--reply") == 0) {
+    ignore_reply = 0;
     i++;
   }
 
