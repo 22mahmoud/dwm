@@ -1,4 +1,5 @@
 dwm
+dwm-msg
 *.diff
 config.h
 *.orig
