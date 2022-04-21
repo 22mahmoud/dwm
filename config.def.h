@@ -152,6 +152,7 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  viewall,             1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  setgaps,             1,      {ARG_TYPE_SINT}   ),
 	IPCCOMMAND(  togglescratch,       1,      {ARG_TYPE_UINT}   ),
+	IPCCOMMAND(  xrdb,                1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
 };
 

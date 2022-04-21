@@ -64,7 +64,6 @@
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 
-
 #define NUMTAGS					(LENGTH(tags) + LENGTH(scratchpads))
 #define TAGMASK     			((1 << NUMTAGS) - 1)
 #define SPTAG(i) 				((1 << LENGTH(tags)) << (i))
@@ -334,6 +333,7 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void xrdb(const Arg *arg);
 static void load_xresources(void);
 static void resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst);
 
@@ -3122,6 +3122,21 @@ load_xresources(void)
 		resource_load(db, p->name, p->type, p->dst);
 	XCloseDisplay(display);
 }
+
+void 
+xrdb(const Arg *arg)
+{
+
+  load_xresources();
+  int i;
+  for (i = 0; i < LENGTH(colors); i++) {
+    scheme[i] = drw_scm_create(drw, colors[i], 3);
+  }
+
+  focus(NULL);
+  arrange(NULL);
+}
+
 
 int
 main(int argc, char *argv[])

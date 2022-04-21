@@ -47,7 +47,12 @@ git push
 
 ## WIP
 - [ ] integrate fullgaps with pertag
-- [ ] reload xresources on run time and use ipc
+
+## Features
+- [x] reload xresources on run time and use ipc
+```
+dwm-msg run_commandd xrdb
+```
 
 ## Bugs
 - [ ] togglescratch crashes dwm when using it with ipc `dwm-msg`
