@@ -59,7 +59,20 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeDarker,
+       SchemeRed, SchemeGreen, SchemeBlue,
+       SchemeCyan, SchemeMagenta, SchemeYellow,
+       SchemeBlack, SchemeWhite,
+       SchemeBrRed, SchemeBrGreen, SchemeBrBlue,
+       SchemeBrCyan, SchemeBrMagenta, SchemeBrYellow,
+       SchemeBrBlack, SchemeBrWhite, SchemeFloat, SchemeInactive, SchemeBar,
+       SchemeTag, SchemeTag1, SchemeTag2, SchemeTag3,
+       SchemeTag4, SchemeTag5, SchemeTag6, SchemeTag7,
+       SchemeTag8, SchemeTag9, SchemeLayout,
+       SchemeTitle, SchemeTitleFloat,
+       SchemeTitle1, SchemeTitle2, SchemeTitle3,
+       SchemeTitle4, SchemeTitle5, SchemeTitle6,
+       SchemeTitle7, SchemeTitle8, SchemeTitle9 }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -723,7 +736,7 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+    drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? tagschemes[i] : SchemeTag]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 		if (occ & 1 << i)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
@@ -737,7 +750,8 @@ drawbar(Monitor *m)
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+      for (i = 0; i < LENGTH(tags); i++)
+        drw_setscheme(m->sel->tags & 1 << i && m == selmon ? drw : NULL, scheme[titleschemes[i]]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
