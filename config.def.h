@@ -51,7 +51,10 @@ static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0}
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "", " ", "", "" , "", "", "", "", "" };
+static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -105,6 +108,7 @@ static Key keys[] = {
 	{ 0,                            0,             NULL,         {0} },
 
   /* scratchpads becaouse it crashs dwm with ipc */
+	{ MODKEY|ShiftMask,             XK_t,      togglealttag,   {0} },
 	{ MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,            	XK_n,         togglescratch,  {.ui = 1 } },
 	{ MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 2 } },
