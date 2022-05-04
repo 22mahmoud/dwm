@@ -9,7 +9,7 @@ static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "monospace 10";
-static int showvacant         = 1;
+static int showvacant         = 0;
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 
@@ -51,22 +51,36 @@ static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0}
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
-static const char *tags[] = { "", " ", "", "" , "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "" , "", "", "", "", "" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
+
+#define RULE(...) { .monitor = -1, __VA_ARGS__ }
+#define SCRATCH_RULE(...) { .monitor = -1, .isterminal = 1, .isfloating = 1, .noswallow = 1, __VA_ARGS__ }
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class            instance         title             tags mask   isfloating  isterminal   noswallow   monitor */
-	{ TERMCLASS,        NULL,            NULL,             0,          0,          1,           0,          -1 },
-	{ NULL,		         "spterm",	       NULL,		         SPTAG(0),	 1,			     1,           1,          -1 },
-	{ NULL,		         "spfm",		       NULL,		         SPTAG(1),	 1,			     1,           1,          -1 },
-	{ NULL,		         "spcalc",	       NULL,		         SPTAG(2),	 1,			     1,           1,          -1 },
-	{ NULL,		         "sphtop",	       NULL,		         SPTAG(3),	 1,			     1,           1,          -1 },
-	{ NULL,             NULL,           "Event Tester",    0,          0,          0,           1,          -1 }, /* xev */
+	RULE(.class = TERMCLASS, .isterminal = 1, .noswallow = 1),
+
+	SCRATCH_RULE(.instance = "spterm", .tags = SPTAG(0)),
+	SCRATCH_RULE(.instance = "spfm",   .tags = SPTAG(1)),
+	SCRATCH_RULE(.instance = "spcalc", .tags = SPTAG(2)),
+	SCRATCH_RULE(.instance = "sphtop", .tags = SPTAG(3)),
+
+	RULE(.class = "qutebrowser", .tags = 1 << 0, .noswallow = 1),
+  RULE(.monitor = -1, .title = "mpv", .tags = 1 << 4),
+  RULE(.monitor = -1, .title = "neomuttTerm", .tags = 1 << 5),
+  RULE(.monitor = -1, .title = "newsboatTerm", .tags = 1 << 6),
+  RULE(.monitor = -1, .class = "TelegramDesktop", .tags = 1 << 7),
+  RULE(.monitor = -1, .class = "Slack", .tags = 1 << 7),
+  RULE(.monitor = -1, .class = "Discord", .tags = 1 << 7),
+  RULE(.monitor = -1, .title = "Discord Updater", .tags = 1 << 7, .isfloating = 1),
+  RULE(.monitor = -1, .class = "Spotify", .tags = 1 << 8),
+
+  RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1),
 };
 
 /* layout(s) */
@@ -108,7 +122,6 @@ static Key keys[] = {
 	{ 0,                            0,             NULL,         {0} },
 
   /* scratchpads becaouse it crashs dwm with ipc */
-	{ MODKEY|ShiftMask,             XK_t,      togglealttag,   {0} },
 	{ MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,            	XK_n,         togglescratch,  {.ui = 1 } },
 	{ MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 2 } },
@@ -158,6 +171,7 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  setgaps,             1,      {ARG_TYPE_SINT}   ),
 	IPCCOMMAND(  togglescratch,       1,      {ARG_TYPE_UINT}   ),
 	IPCCOMMAND(  xrdb,                1,      {ARG_TYPE_NONE}   ),
-  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
+  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  togglealttag,        1,      {ARG_TYPE_NONE}   )
 };
 
