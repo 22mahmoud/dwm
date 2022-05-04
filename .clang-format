@@ -1,0 +1,14 @@
+---
+BasedOnStyle: LLVM
+Language: Cpp
+ColumnLimit: 100
+BreakBeforeBraces: Linux
+UseTab: Never
+IndentWidth: 2
+AlignArrayOfStructures: Left
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveAssignments:  Consecutive
+AlignConsecutiveMacros: Consecutive
+AlwaysBreakAfterReturnType: AllDefinitions
+AlignEscapedNewlines: Right
+...
