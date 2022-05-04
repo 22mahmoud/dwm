@@ -9,6 +9,7 @@ static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "monospace 10";
+static int showvacant         = 1;
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 

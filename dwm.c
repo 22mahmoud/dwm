@@ -180,6 +180,7 @@ struct Monitor {
 	unsigned int tagset[2];
 	TagState tagstate;
 	int showbar;
+  int showvacant;
 	int topbar;
 	Client *clients;
 	Client *sel;
@@ -626,7 +627,7 @@ buttonpress(XEvent *e)
 			if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
 				continue;
 			x += TEXTW(tags[i]);
-		} while (ev->x >= x && ++i < LENGTH(tags));
+		} while (selmon->showvacant == 0 && ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
@@ -894,6 +895,7 @@ createmon(void)
 	m->mfact = mfact;
 	m->nmaster = nmaster;
 	m->showbar = showbar;
+  m->showvacant = showvacant;
 	m->topbar = topbar;
 	m->gap = malloc(sizeof(Gap));
 	gap_copy(m->gap, &default_gap);
@@ -1003,11 +1005,15 @@ drawbar(Monitor *m)
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* Do not draw vacant tags */
-		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i) && m->showvacant == 0)
 			continue;
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i, False);
+		if (occ & 1 << i && m->showvacant == 1)
+			drw_rect(drw, x + boxs, boxs, boxw, boxw,
+				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+				urg & 1 << i);
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
