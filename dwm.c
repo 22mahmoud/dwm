@@ -40,6 +40,7 @@
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
 #include <X11/Xft/Xft.h>
+#include <pango/pango.h>
 
 #include "drw.h"
 #include "util.h"
@@ -55,7 +56,8 @@
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
-#define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define TEXTW(X)                (drw_font_getwidth(drw, (X), False) + lrpad)
+#define TEXTWM(X)                (drw_font_getwidth(drw, (X), True) + lrpad)
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
@@ -237,7 +239,7 @@ static void zoom(const Arg *arg);
 
 /* variables */
 static const char broken[] = "broken";
-static char stext[256];
+static char stext[512];
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
@@ -700,8 +702,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, tw = 0;
-	int boxs = drw->fonts->h / 9;
-	int boxw = drw->fonts->h / 6 + 2;
+	int boxs = drw->font->h / 9;
+	int boxw = drw->font->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -712,7 +714,7 @@ drawbar(Monitor *m)
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
+		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0, True);
 	}
 
 	for (c = m->clients; c; c = c->next) {
@@ -724,7 +726,7 @@ drawbar(Monitor *m)
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i, False);
 		if (occ & 1 << i)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
 				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
@@ -733,12 +735,12 @@ drawbar(Monitor *m)
 	}
 	w = blw = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0, False);
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0, False);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
@@ -1549,10 +1551,10 @@ setup(void)
 	sh = DisplayHeight(dpy, screen);
 	root = RootWindow(dpy, screen);
 	drw = drw_create(dpy, screen, root, sw, sh);
-	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
+	if (!drw_font_create(drw, font))
 		die("no fonts could be loaded.");
-	lrpad = drw->fonts->h;
-	bh = drw->fonts->h + 2;
+	lrpad = drw->font->h;
+	bh = drw->font->h + 2;
 	updategeom();
 	/* init atoms */
 	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
@@ -1602,7 +1604,6 @@ setup(void)
 	grabkeys();
 	focus(NULL);
 }
-
 
 void
 seturgent(Client *c, int urg)
