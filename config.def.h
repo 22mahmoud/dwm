@@ -43,24 +43,24 @@ static char col_base0E[]  = "#d3869b"; /* Keywords, Storage, Selector, Markup It
 static char col_base0F[]  = "#d65d0e"; /* Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
 static char *colors[][3]      = {
   /* C(Name,              bg,           fg,           border    ), */
-    C(SchemeNorm,         col_base04,   col_base01,   col_base02),
-    C(SchemeSel,          col_base04,   col_base02,   col_base0C),
+    C(SchemeNorm,         col_base04,   col_base00,   col_base02),
+    C(SchemeSel,          col_base04,   col_base00,   col_base0C),
 
-    C(SchemeTitle,        col_base04,   col_base01,   col_base0C),
-    C(SchemeTitleFloat,   col_base05,   col_base02,   col_base0C),
+    C(SchemeTitle,        col_base04,   col_base00,   col_base0C),
+    C(SchemeTitleFloat,   col_base04,   col_base00,   col_base0C),
 
-    C(SchemeBar,          col_base04,   col_base02,   col_base00),
-    C(SchemeTag,          col_base04,   col_base01,   col_base00),
+    C(SchemeBar,          col_base04,   col_base01,   col_base00),
+    C(SchemeTag,          col_base04,   col_base00,   col_base00),
 
-    C(SchemeTag1,         col_base0A,   col_base01,   col_base00),
-    C(SchemeTag2,         col_base0B,   col_base01,   col_base00),
-    C(SchemeTag3,         col_base0C,   col_base01,   col_base00),
-    C(SchemeTag4,         col_base0D,   col_base01,   col_base00),
-    C(SchemeTag5,         col_base0E,   col_base01,   col_base00),
-    C(SchemeTag6,         col_base0F,   col_base01,   col_base00),
-    C(SchemeTag7,         col_base08,   col_base01,   col_base00),
-    C(SchemeTag8,         col_base09,   col_base01,   col_base00),
-    C(SchemeTag9,         col_base0C,   col_base01,   col_base00),
+    C(SchemeTag1,         col_base0A,   col_base00,   col_base00),
+    C(SchemeTag2,         col_base0B,   col_base00,   col_base00),
+    C(SchemeTag3,         col_base0C,   col_base00,   col_base00),
+    C(SchemeTag4,         col_base0D,   col_base00,   col_base00),
+    C(SchemeTag5,         col_base0E,   col_base00,   col_base00),
+    C(SchemeTag6,         col_base0F,   col_base00,   col_base00),
+    C(SchemeTag7,         col_base08,   col_base00,   col_base00),
+    C(SchemeTag8,         col_base09,   col_base00,   col_base00),
+    C(SchemeTag9,         col_base0C,   col_base00,   col_base00),
 };
 
 /* static char *colors[][3]      = { */
