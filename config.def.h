@@ -13,6 +13,8 @@ static int showvacant         = 0;
 static int showtitle          = 1;
 static const int vertpad            = 10;       /* vertical padding of bar */
 static const int sidepad            = 10;       /* horizontal padding of bar */
+static const int horizpadbar        = 15;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 10;        /* vertical padding for statusbar */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 
