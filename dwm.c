@@ -71,6 +71,10 @@
 #define TEXTW(X)                (drw_font_getwidth(drw, (X), False) + lrpad)
 #define TEXTWM(X)                (drw_font_getwidth(drw, (X), True) + lrpad)
 
+#define C(name, ...) [name] = { __VA_ARGS__ }
+#define RULE(...) { .monitor = -1, __VA_ARGS__ }
+#define SCRATCH_RULE(...) { .monitor = -1, .isterminal = 1, .isfloating = 1, .noswallow = 1, __VA_ARGS__ }
+
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 /* XEMBED messages */
 #define XEMBED_EMBEDDED_NOTIFY      0
@@ -89,7 +93,23 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel }; /* color schemes */
+enum { 
+  SchemeNorm,
+  SchemeSel ,
+  SchemeTitle,
+  SchemeTitleFloat,
+  SchemeBar,
+  SchemeTag,
+  SchemeTag1,
+  SchemeTag2,
+  SchemeTag3,
+  SchemeTag4,
+  SchemeTag5,
+  SchemeTag6,
+  SchemeTag7,
+  SchemeTag8,
+  SchemeTag9,
+}; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
@@ -181,6 +201,7 @@ struct Monitor {
 	TagState tagstate;
 	int showbar;
   int showvacant;
+  int showtitle;
 	int topbar;
 	Client *clients;
 	Client *sel;
@@ -900,6 +921,7 @@ createmon(void)
 	m->nmaster = nmaster;
 	m->showbar = showbar;
   m->showvacant = showvacant;
+  m->showtitle  = showtitle;
 	m->topbar = topbar;
 	m->gap = malloc(sizeof(Gap));
 	gap_copy(m->gap, &default_gap);
@@ -985,6 +1007,7 @@ drawbar(Monitor *m)
 	int boxs = drw->font->h / 9;
 	int boxw = drw->font->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
+  int tagscheme = SchemeNorm;
 	Client *c;
 
 	if (!m->showbar)
@@ -1002,18 +1025,26 @@ drawbar(Monitor *m)
 
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
-		occ |= c->tags;
+    occ |= c->tags == 255 ? 0 : c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+    tagscheme = SchemeTag;
+
 		/* Do not draw vacant tags */
-		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i) && m->showvacant == 0)
+		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i) && !m->showvacant)
 			continue;
 		w = TEXTW(tags[i]);
-		wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+		wdelta = selmon->alttag ? (TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
+
+    if (m == selmon && m->tagset[m->seltags] & 1 << i) {
+      tagscheme = SchemeBar;
+      if (m->sel && m->sel->tags & 1 << i) tagscheme = tagschemes[i];
+    }
+
+		drw_setscheme(drw, scheme[tagscheme]);
 		drw_text(drw, x, 0, w, bh, wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : tags[i]), urg & 1 << i, False);
 		if (occ & 1 << i && m->showvacant == 1)
 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
@@ -1026,8 +1057,8 @@ drawbar(Monitor *m)
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0, False);
 
 	if ((w = m->ww - tw - stw - x) > bh) {
-		if (m->sel) {
-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+		if (m->sel && m->showtitle) {
+      drw_setscheme(m == selmon ? drw : NULL, scheme[m->sel->isfloating  ? SchemeTitleFloat : SchemeTitle]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0, False);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);

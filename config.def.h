@@ -10,6 +10,7 @@ static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "monospace 10";
 static int showvacant         = 0;
+static int showtitle          = 1;
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 
@@ -19,17 +20,53 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 
-/* default base16-gruvbox theme */
-static char col_base00[]      = "#1d2021";
-static char col_base01[]      = "#3c3836";
-static char col_base02[]      = "#504945";
-static char col_base04[]      = "#bdae93";
-static char col_base0C[]      = "#8ec07c";
-static char col_base0D[]      = "#83a598";
+/* 
+ * Theme colors
+ * use base16 as guide line for theming
+ * default: base16 gruvbox dark hard
+ * */
+static char col_base00[]  = "#1d2021"; /* Default Background */
+static char col_base01[]  = "#3c3836"; /* Lighter Background (Used for status bars, line number and folding marks) */
+static char col_base02[]  = "#504945"; /* Selection Background */
+static char col_base03[]  = "#665c54"; /* Comments, Invisibles, Line Highlighting */
+static char col_base04[]  = "#bdae93"; /* Dark Foreground (Used for status bars) */
+static char col_base05[]  = "#d5c4a1"; /* Default Foreground, Caret, Delimiters, Operators */
+static char col_base06[]  = "#ebdbb2"; /* Light Foreground (Not often used) */
+static char col_base07[]  = "#fbf1c7"; /* Light Background (Not often used) */
+static char col_base08[]  = "#fb4934"; /* Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
+static char col_base09[]  = "#fe8019"; /* Integers, Boolean, Constants, XML Attributes, Markup Link Url */
+static char col_base0A[]  = "#fabd2f"; /* Classes, Markup Bold, Search Text Background */
+static char col_base0B[]  = "#b8bb26"; /* Strings, Inherited Class, Markup Code, Diff Inserted */
+static char col_base0C[]  = "#8ec07c"; /* Support, Regular Expressions, Escape Characters, Markup Quotes */
+static char col_base0D[]  = "#83a598"; /* Functions, Methods, Attribute IDs, Headings */
+static char col_base0E[]  = "#d3869b"; /* Keywords, Storage, Selector, Markup Italic, Diff Changed */
+static char col_base0F[]  = "#d65d0e"; /* Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
 static char *colors[][3]      = {
-  [SchemeNorm] = { col_base04, col_base01, col_base02 },
-  [SchemeSel]  = { col_base00, col_base0D, col_base0C },
+  /* C(Name,              bg,           fg,           border    ), */
+    C(SchemeNorm,         col_base04,   col_base01,   col_base02),
+    C(SchemeSel,          col_base04,   col_base02,   col_base0C),
+
+    C(SchemeTitle,        col_base04,   col_base01,   col_base0C),
+    C(SchemeTitleFloat,   col_base05,   col_base02,   col_base0C),
+
+    C(SchemeBar,          col_base04,   col_base02,   col_base00),
+    C(SchemeTag,          col_base04,   col_base01,   col_base00),
+
+    C(SchemeTag1,         col_base0A,   col_base01,   col_base00),
+    C(SchemeTag2,         col_base0B,   col_base01,   col_base00),
+    C(SchemeTag3,         col_base0C,   col_base01,   col_base00),
+    C(SchemeTag4,         col_base0D,   col_base01,   col_base00),
+    C(SchemeTag5,         col_base0E,   col_base01,   col_base00),
+    C(SchemeTag6,         col_base0F,   col_base01,   col_base00),
+    C(SchemeTag7,         col_base08,   col_base01,   col_base00),
+    C(SchemeTag8,         col_base09,   col_base01,   col_base00),
+    C(SchemeTag9,         col_base0C,   col_base01,   col_base00),
 };
+
+/* static char *colors[][3]      = { */
+/*   [SchemeNorm] = { col_base04, col_base01, col_base02 }, */
+/*   [SchemeSel]  = { col_base00, col_base0D, col_base0C }, */
+/* }; */
 
 typedef struct {
 	const char *name;
@@ -51,12 +88,15 @@ static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0}
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
-static const char *tags[] = { "", "", "", "" , "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "" , "", "", "", "", "" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
-#define RULE(...) { .monitor = -1, __VA_ARGS__ }
-#define SCRATCH_RULE(...) { .monitor = -1, .isterminal = 1, .isfloating = 1, .noswallow = 1, __VA_ARGS__ }
+static const int tagschemes[] = {
+  SchemeTag1, SchemeTag2, SchemeTag3,
+  SchemeTag4, SchemeTag5, SchemeTag6,
+  SchemeTag7, SchemeTag8, SchemeTag9
+};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -101,11 +141,21 @@ static const Layout layouts[] = {
  */
 ResourcePref resources[] = {
     { "color0",       STRING,   &col_base00 },
+    { "color1",       STRING,   &col_base08 },
+    { "color2",       STRING,   &col_base0B },
+    { "color3",       STRING,   &col_base0A },
+    { "color4",       STRING,   &col_base0D },
+    { "color5",       STRING,   &col_base0E },
+    { "color6",       STRING,   &col_base0C },
+    { "color7",       STRING,   &col_base05 },
+    { "color8",       STRING,   &col_base03 },
+    { "color9",       STRING,   &col_base09 },
     { "color10",      STRING,   &col_base01 },
     { "color11",      STRING,   &col_base02 },
     { "color12",      STRING,   &col_base04 },
-    { "color6",       STRING,   &col_base0C },
-    { "color4",       STRING,   &col_base0D },
+    { "color13",      STRING,   &col_base06 },
+    { "color14",      STRING,   &col_base0F },
+    { "color15",      STRING,   &col_base07 },
 
 		{ "borderpx",     INTEGER,  &borderpx },
 		{ "snap",         INTEGER,  &snap },
