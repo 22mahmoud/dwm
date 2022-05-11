@@ -2808,7 +2808,7 @@ updatesystray(void)
 		if (i->mon != m)
 			i->mon = m;
 	}
-	w = w ? w + systrayspacing : 1;
+	w = w ? w + systrayspacing + horizpadbar : 1;
 	x -= w;
   XMoveResizeWindow(dpy, systray->win, x - sp, m->by + vp, w, bh);
   wc.x = x - sp; wc.y = m->by + vp; wc.width = w; wc.height = bh;
