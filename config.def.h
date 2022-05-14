@@ -116,14 +116,18 @@ static const Rule rules[] = {
 	SCRATCH_RULE(.instance = "sphtop", .tags = SPTAG(3)),
 
 	RULE(.class = "qutebrowser", .tags = 1 << 0, .noswallow = 1),
-  RULE(.monitor = -1, .title = "mpv", .tags = 1 << 4),
-  RULE(.monitor = -1, .title = "neomuttTerm", .tags = 1 << 5),
-  RULE(.monitor = -1, .title = "newsboatTerm", .tags = 1 << 6),
-  RULE(.monitor = -1, .class = "TelegramDesktop", .tags = 1 << 7),
-  RULE(.monitor = -1, .class = "Slack", .tags = 1 << 7),
-  RULE(.monitor = -1, .class = "Discord", .tags = 1 << 7),
-  RULE(.monitor = -1, .title = "Discord Updater", .tags = 1 << 7, .isfloating = 1),
-  RULE(.monitor = -1, .class = "Spotify", .tags = 1 << 8),
+  RULE(.title = "mpv", .tags = 1 << 4),
+  RULE(.title = "neomuttTerm", .tags = 1 << 5),
+  RULE(.title = "newsboatTerm", .tags = 1 << 6),
+  RULE(.class = "TelegramDesktop", .tags = 1 << 7),
+  RULE(.class = "Slack", .tags = 1 << 7),
+  RULE(.class = "Discord", .tags = 1 << 7),
+  RULE(.title = "Discord Updater", .tags = 1 << 7, .isfloating = 1),
+  RULE(.class = "Spotify", .tags = 1 << 8),
+
+  RULE(.class = "Steam", .tags = 1 << 3),
+  RULE(.class = "Steam", .title = "Friends List", .isfloating = 1, .tags = 1 << 3),
+  RULE(.class = "Bottles", .tags = 1 << 3),
 
   RULE(.title = "Event Tester", .isfloating = 1, .noswallow = 1),
 };
