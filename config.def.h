@@ -156,6 +156,7 @@ static const Rule rules[] = {
   RULE(.class = "Spotify", .tags = 1 << 8),
 
   RULE(.class = "Steam", .tags = 1 << 3),
+  RULE(.title = "Steam", .tags = 1 << 3),
   RULE(.class = "Steam", .title = "Friends List", .isfloating = 1, .tags = 1 << 3),
   RULE(.class = "Bottles", .tags = 1 << 3),
 
