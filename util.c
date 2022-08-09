@@ -8,18 +8,9 @@
 
 #include "util.h"
 
-void *
-ecalloc(size_t nmemb, size_t size)
-{
-	void *p;
-
-	if (!(p = calloc(nmemb, size)))
-		die("calloc:");
-	return p;
-}
-
 void
-die(const char *fmt, ...) {
+die(const char *fmt, ...)
+{
 	va_list ap;
 
 	va_start(ap, fmt);
@@ -167,4 +158,14 @@ nullterminate(char **str, size_t *len)
   (*str)[*len - 1] = '\0';
 
   return 0;
+}
+
+void *
+ecalloc(size_t nmemb, size_t size)
+{
+	void *p;
+
+	if (!(p = calloc(nmemb, size)))
+		die("calloc:");
+	return p;
 }
