@@ -2458,8 +2458,6 @@ setupepoll(void)
 	}
 }
 
-=======
->>>>>>> master
 void
 seturgent(Client *c, int urg)
 {
