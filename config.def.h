@@ -213,6 +213,14 @@ ResourcePref resources[] = {
     { "color5",       STRING,  &termcol13   },
     { "color6",       STRING,  &termcol14   },
     { "color15",      STRING,  &termcol15   },
+
+		{ "borderpx",     INTEGER,  &borderpx },
+		{ "snap",         INTEGER,  &snap },
+		{ "showbar",      INTEGER,  &showbar },
+		{ "topbar",       INTEGER,  &topbar },
+		{ "nmaster",      INTEGER,  &nmaster },
+		{ "resizehints",  INTEGER,  &resizehints },
+		{ "mfact",      	FLOAT,    &mfact },
 };
 
 static Key keys[] = {
