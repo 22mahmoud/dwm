@@ -155,6 +155,7 @@ static const Rule rules[] = {
   RULE(.title = "Discord Updater", .tags = 1 << 7, .isfloating = 1),
   RULE(.class = "Spotify", .tags = 1 << 8),
 
+  RULE(.class = "heroic", .tags = 1 << 3),
   RULE(.class = "Steam", .tags = 1 << 3),
   RULE(.title = "Steam", .tags = 1 << 3),
   RULE(.class = "Steam", .title = "Friends List", .isfloating = 1, .tags = 1 << 3),
