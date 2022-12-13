@@ -109,7 +109,7 @@ typedef struct {
 } Sp;
 
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "100x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "nnn", "-c", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "sfm", NULL };
 const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-ql", NULL };
 const char *spcmd4[] = {"st", "-n", "sphtop", "-g", "150x34", "-e", "htop", NULL };
 static Sp scratchpads[] = {
@@ -234,20 +234,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 3 } },
 };
 
-/* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+static Button buttons[] = {
+	/* click         event mask button    function        argument */
+	{ ClkClientWin,  MODKEY,    Button1,  movemouse,      {0} },
+	{ ClkClientWin,  MODKEY,    Button3,  resizemouse,    {0} },
+	{ ClkTagBar,     0,         Button1,  view,           {0} },
 };
 
 void
