@@ -11,12 +11,12 @@ static int topbar             = 1;        /* 0 means bottom bar */
 static char font[]            = "monospace 10";
 static int showvacant         = 0;
 static int showtitle          = 1;
-static const int vertpad            = 10;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
-static const int horizpadbar        = 15;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 10;        /* vertical padding for statusbar */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
+static int vertpad            = 10;       /* vertical padding of bar */
+static int sidepad            = 10;       /* horizontal padding of bar */
+static int horizpadbar        = 15;        /* horizontal padding for statusbar */
+static int vertpadbar         = 10;        /* vertical padding for statusbar */
+static int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
+static Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
@@ -221,6 +221,14 @@ ResourcePref resources[] = {
     { "nmaster",      INTEGER,  &nmaster      },
     { "resizehints",  INTEGER,  &resizehints  },
     { "mfact",      	FLOAT,    &mfact        },
+
+    { "showtitle",    INTEGER,     &showtitle             },
+    { "vertpad",      INTEGER,     &vertpad               },
+    { "sidepad",      INTEGER,     &sidepad               },
+    { "horizpadbar",  INTEGER,     &horizpadbar           },
+    { "vertpadbar",   INTEGER,     &vertpadbar            },
+    { "realgap",      INTEGER,     &default_gap.realgap   },
+    { "gappx",        INTEGER,     &default_gap.gappx     },
 };
 
 static Key keys[] = {
