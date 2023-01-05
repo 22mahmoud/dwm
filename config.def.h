@@ -265,6 +265,7 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  focusmon,              1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  focusstack,            1,      {ARG_TYPE_SINT}   ),
   IPCCOMMAND(  zoom,                  1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  togglebar,             1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  togglefullscreen,      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  togglefakefullscreen,  1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  togglesticky,          1,      {ARG_TYPE_NONE}   ),
