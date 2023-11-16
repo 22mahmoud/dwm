@@ -1,5 +1,3 @@
-/* See LICENSE file for copyright and license details. */
-
 #define TERMCLASS "St"
 #define MODKEY Mod4Mask
 
@@ -109,15 +107,13 @@ typedef struct {
 } Sp;
 
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "100x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "120x34", "-e", "sfm", NULL };
-const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-ql", NULL };
-const char *spcmd4[] = {"st", "-n", "sphtop", "-g", "150x34", "-e", "htop", NULL };
+const char *spcmd2[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-ql", NULL };
+const char *spcmd3[] = {"st", "-n", "sphtop", "-g", "150x34", "-e", "htop", NULL };
 static Sp scratchpads[] = {
-	/* name          cmd  */
+	/* name      cmd  */
 	{"spterm",   spcmd1},
-	{"spfm",     spcmd2},
-	{"spcalc",   spcmd3},
-	{"sphtop",   spcmd4},
+	{"spcalc",   spcmd2},
+	{"sphtop",   spcmd3},
 };
 static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
@@ -141,9 +137,8 @@ static const Rule rules[] = {
 	RULE(.class = TERMCLASS, .isterminal = 1, .noswallow = 1),
 
 	SCRATCH_RULE(.instance = "spterm", .tags = SPTAG(0)),
-	SCRATCH_RULE(.instance = "spfm",   .tags = SPTAG(1)),
-	SCRATCH_RULE(.instance = "spcalc", .tags = SPTAG(2)),
-	SCRATCH_RULE(.instance = "sphtop", .tags = SPTAG(3)),
+	SCRATCH_RULE(.instance = "spcalc", .tags = SPTAG(1)),
+	SCRATCH_RULE(.instance = "sphtop", .tags = SPTAG(2)),
 
 	RULE(.class = "qutebrowser", .tags = 1 << 0, .noswallow = 1),
   RULE(.title = "mpv", .tags = 1 << 4),
@@ -235,11 +230,10 @@ static Key keys[] = {
 	/* modifier                     key           function        argument */
 	{ 0,                            0,             NULL,         {0} },
 
-  /* scratchpads becaouse it crashs dwm with ipc */
-	{ MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,            	XK_n,         togglescratch,  {.ui = 1 } },
-	{ MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 2 } },
-	{ MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 3 } },
+  /* /1* scratchpads becaouse it crashs dwm with ipc *1/ */
+	/* { MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } }, */
+	/* { MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 1 } }, */
+	/* { MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 2 } }, */
 };
 
 static Button buttons[] = {
