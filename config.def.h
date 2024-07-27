@@ -230,10 +230,9 @@ static Key keys[] = {
 	/* modifier                     key           function        argument */
 	{ 0,                            0,             NULL,         {0} },
 
-  /* /1* scratchpads becaouse it crashs dwm with ipc *1/ */
-	/* { MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } }, */
-	/* { MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 1 } }, */
-	/* { MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 2 } }, */
+	{ MODKEY|ShiftMask,            	XK_Return,    togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,            	XK_m,         togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,            	XK_h,         togglescratch,  {.ui = 2 } },
 };
 
 static Button buttons[] = {
@@ -271,7 +270,7 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  setlayoutsafe,             1,      {ARG_TYPE_PTR}    ),
   IPCCOMMAND(  viewall,                   1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  setgaps,                   1,      {ARG_TYPE_SINT}   ),
-	IPCCOMMAND(  togglescratch,             1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  togglescratch,             1,      {ARG_TYPE_UINT}   ),
 	IPCCOMMAND(  xrdb,                      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  quit,                      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  togglealttag,              1,      {ARG_TYPE_NONE}   )
