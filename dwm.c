@@ -737,7 +737,7 @@ cleanup(void)
 		free(systray);
 	}
 
-    for (i = 0; i < CurLast; i++)
+  for (i = 0; i < CurLast; i++)
 		drw_cur_free(drw, cursor[i]);
 	for (i = 0; i < LENGTH(colors) + 1; i++)
 		free(scheme[i]);
@@ -3575,10 +3575,14 @@ xrdb(const Arg *arg)
 {
 
   load_xresources();
+
   int i;
-  for (i = 0; i < LENGTH(colors); i++) {
+  for (i = 0; i < LENGTH(colors); i++)
     scheme[i] = drw_scm_create(drw, colors[i], 3);
-  }
+
+  if (systray) {
+		XMoveWindow(dpy, systray->win, -32000, -32000);
+	}
 
   focus(NULL);
   arrange(NULL);
