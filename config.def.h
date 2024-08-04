@@ -209,6 +209,7 @@ ResourcePref resources[] = {
     { "color6",       STRING,  &termcol14     },
     { "color15",      STRING,  &termcol15     },
 
+    { "font",         STRING,   &font         },
     { "borderpx",     INTEGER,  &borderpx     },
     { "snap",         INTEGER,  &snap         },
     { "showbar",      INTEGER,  &showbar      },
