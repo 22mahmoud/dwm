@@ -107,7 +107,7 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { 
+enum {
   SchemeNorm,
   SchemeSel ,
   SchemeTitle,
@@ -1076,8 +1076,8 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
   x = m->ww - w - getsystraywidth() - 2 * sp;
 
 	drw_setscheme(drw, scheme[LENGTH(colors)]);
-	drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
-	drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
+	drw->scheme[ColFg] = scheme[SchemeBar][ColBg];
+	drw->scheme[ColBg] = scheme[SchemeBar][ColFg];
 	drw_rect(drw, x, 0, w, bh, 1, 1);
 	x++;
 
@@ -1142,7 +1142,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 		drw_text(drw, x, 0, w, bh, 0, text, 0, True);
 	}
 
-	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, scheme[SchemeBar]);
 	free(p);
 
 	return ret;
@@ -3570,7 +3570,7 @@ load_xresources(void)
 	XCloseDisplay(display);
 }
 
-void 
+void
 xrdb(const Arg *arg)
 {
 

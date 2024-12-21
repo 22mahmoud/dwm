@@ -23,15 +23,17 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const unsigned int systrayiconsize = 20; /* systray icon size in px */
 static const int showsystray        = 1;     /* 0 means no systray */
 
-/* 
+/*
  * Theme colors
  * use base16 as guide line for theming
  * default: base16 gruvbox dark hard
  * */
+static char background[]  = "#1d2021"; /* Default Background */
+static char foreground[]  = "#d5c4a1"; /* Default Foreground */
 static char col_base00[]  = "#1d2021"; /* Default Background */
 static char col_base01[]  = "#3c3836"; /* Lighter Background (Used for status bars, line number and folding marks) */
 static char col_base02[]  = "#504945"; /* Selection Background */
-// static char col_base03[]  = "#665c54"; /* Comments, Invisibles, Line Highlighting */
+static char col_base03[]  = "#665c54"; /* Comments, Invisibles, Line Highlighting */
 static char col_base04[]  = "#bdae93"; /* Dark Foreground (Used for status bars) */
 static char col_base05[]  = "#d5c4a1"; /* Default Foreground, Caret, Delimiters, Operators */
 static char col_base06[]  = "#ebdbb2"; /* Light Foreground (Not often used) */
@@ -46,24 +48,24 @@ static char col_base0E[]  = "#d3869b"; /* Keywords, Storage, Selector, Markup It
 static char col_base0F[]  = "#d65d0e"; /* Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
 static char *colors[][3]      = {
   /* C(Name,              bg,           fg,           border    ), */
-    C(SchemeNorm,         col_base04,   col_base00,   col_base02),
-    C(SchemeSel,          col_base04,   col_base00,   col_base0C),
+    C(SchemeNorm,         foreground,   background,   col_base02),
+    C(SchemeSel,          foreground,   background,   col_base0C),
 
-    C(SchemeTitle,        col_base04,   col_base00,   col_base0C),
-    C(SchemeTitleFloat,   col_base04,   col_base00,   col_base0C),
+    C(SchemeTitle,        foreground,   background,   col_base0C),
+    C(SchemeTitleFloat,   foreground,   background,   col_base0C),
 
-    C(SchemeBar,          col_base04,   col_base01,   col_base00),
-    C(SchemeTag,          col_base04,   col_base00,   col_base00),
+    C(SchemeBar,          background,   foreground,   background),
+    C(SchemeTag,          foreground,   background,   background),
 
-    C(SchemeTag1,         col_base0A,   col_base00,   col_base00),
-    C(SchemeTag2,         col_base0B,   col_base00,   col_base00),
-    C(SchemeTag3,         col_base0C,   col_base00,   col_base00),
-    C(SchemeTag4,         col_base0D,   col_base00,   col_base00),
-    C(SchemeTag5,         col_base0E,   col_base00,   col_base00),
-    C(SchemeTag6,         col_base0F,   col_base00,   col_base00),
-    C(SchemeTag7,         col_base08,   col_base00,   col_base00),
-    C(SchemeTag8,         col_base09,   col_base00,   col_base00),
-    C(SchemeTag9,         col_base0C,   col_base00,   col_base00),
+    C(SchemeTag1,         col_base0A,   background,   background),
+    C(SchemeTag2,         col_base0B,   background,   background),
+    C(SchemeTag3,         col_base0C,   background,   background),
+    C(SchemeTag4,         col_base0D,   background,   background),
+    C(SchemeTag5,         col_base0E,   background,   background),
+    C(SchemeTag6,         col_base0F,   background,   background),
+    C(SchemeTag7,         col_base08,   background,   background),
+    C(SchemeTag8,         col_base09,   background,   background),
+    C(SchemeTag9,         col_base0C,   background,   background),
 };
 
 static char termcol0[] = "#1d2021"; /* black   */
@@ -176,6 +178,8 @@ static const Layout layouts[] = {
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
+    { "foreground",   STRING,   &foreground   },
+    { "background",   STRING,   &background   },
     { "color0",       STRING,   &col_base00   },
     { "color1",       STRING,   &col_base08   },
     { "color2",       STRING,   &col_base0B   },
@@ -200,11 +204,13 @@ ResourcePref resources[] = {
     { "color21",      STRING,   &col_base06   },
 
     { "color0",       STRING,   &termcol0      },
+    { "background",   STRING,   &termcol0      },
     { "color1",       STRING,   &termcol1      },
     { "color2",       STRING,   &termcol2      },
     { "color3",       STRING,   &termcol3      },
     { "color4",       STRING,   &termcol4      },
     { "color5",       STRING,   &termcol5      },
+    { "foreground",   STRING,   &termcol5      },
     { "color6",       STRING,   &termcol6      },
     { "color7",       STRING,   &termcol7      },
     { "color8",       STRING,   &termcol8      },
@@ -283,4 +289,3 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  quit,                      1,      {ARG_TYPE_NONE}   ),
   IPCCOMMAND(  togglealttag,              1,      {ARG_TYPE_NONE}   )
 };
-
