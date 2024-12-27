@@ -240,6 +240,7 @@ typedef struct {
 	int isterminal;
 	int noswallow;
 	int monitor;
+	int issticky;
 } Rule;
 
 /* Xresources preferences */
@@ -486,6 +487,7 @@ applyrules(Client *c)
 			c->isterminal = r->isterminal;
 			c->noswallow  = r->noswallow;
 			c->isfloating = r->isfloating;
+			c->issticky = r->issticky;
 			c->tags |= r->tags;
 			if ((r->tags & SPTAGMASK) && r->isfloating) {
 				c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
