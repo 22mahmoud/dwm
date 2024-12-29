@@ -121,7 +121,7 @@ static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0}
 static const XPoint stickyiconbb    = {4,8};	/* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
 
 /* tagging */
-static const char *tags[] = { "", "󰅩", "", "" , "", "", "", "", "" };
+static const char *tags[] = { "", "󰅩", "", "" , "", "", "", "", "" };
 static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
@@ -142,7 +142,8 @@ static const Rule rules[] = {
 	SCRATCH_RULE(.instance = "spcalc",      .tags = SPTAG(1)),
 	SCRATCH_RULE(.instance = "sphtop",      .tags = SPTAG(2)),
 
-	RULE(.class = "fzf-menu", .isfloating = 1, .issticky = 1),
+	RULE(.class = "fzf-menu", .isfloating = 1, .issticky = 1, .noswallow = 1),
+	RULE(.class ="org.gnome.FileRoller", .isfloating = 1),
 
 	RULE(.class = "qutebrowser", .tags = 1 << 0, .noswallow = 1),
 	RULE(.title = "mpv", .tags = 1 << 4),
