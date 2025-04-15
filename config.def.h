@@ -159,6 +159,7 @@ static const Rule rules[] = {
     RULE(.class = "org.gnome.FileRoller", .isfloating = 1),
 
     RULE(.class = "qutebrowser", .tags = 1 << 0, .noswallow = 1),
+    RULE(.class = "vivaldi-stable", .tags = 1 << 0, .noswallow = 1),
     RULE(.title = "mpv", .tags = 1 << 4),
     RULE(.title = "neomuttTerm", .tags = 1 << 5),
     RULE(.title = "newsboatTerm", .tags = 1 << 6),
