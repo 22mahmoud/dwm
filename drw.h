@@ -1,5 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <pango/pango.h>
+#include <pango/pangoxft.h>
+
 typedef struct {
 	Cursor cursor;
 } Cur;
@@ -21,7 +24,7 @@ typedef struct {
 	Drawable drawable;
 	GC gc;
 	Clr *scheme;
-	Fnt *font;
+	Fnt *fonts;
 } Drw;
 
 /* Drawable abstraction */
@@ -31,9 +34,9 @@ void drw_free(Drw *drw);
 
 /* Fnt abstraction */
 Fnt *drw_font_create(Drw* drw, const char font[]);
-void drw_font_free(Fnt* set);
-unsigned int drw_font_getwidth(Drw *drw, const char *text, Bool markup);
 void drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned int *w, unsigned int *h, Bool markup);
+void drw_fontset_free(Fnt* set);
+unsigned int drw_fontset_getwidth(Drw *drw, const char *text, Bool markup);
 
 /* Colorscheme abstraction */
 void drw_clr_create(Drw *drw, Clr *dest, const char *clrname);

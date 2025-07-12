@@ -69,8 +69,8 @@
 #define TAGMASK     			((1 << NUMTAGS) - 1)
 #define SPTAG(i) 				((1 << LENGTH(tags)) << (i))
 #define SPTAGMASK   			(((1 << LENGTH(scratchpads))-1) << LENGTH(tags))
-#define TEXTW(X)                (drw_font_getwidth(drw, (X), False) + lrpad)
-#define TEXTWM(X)                (drw_font_getwidth(drw, (X), True) + lrpad)
+#define TEXTWM(X)               (drw_fontset_getwidth(drw, (X), True) + lrpad)
+#define TEXTW(X)                (drw_fontset_getwidth(drw, (X), False) + lrpad)
 
 #define C(name, ...) [name] = { __VA_ARGS__ }
 #define RULE(...) { .monitor = -1, __VA_ARGS__ }
@@ -1154,8 +1154,8 @@ void
 drawbar(Monitor *m)
 {
 	int x, w, wdelta, tw = 0, stw = 0;
-	int boxs = drw->font->h / 9;
-	int boxw = drw->font->h / 6 + 2;
+	int boxs = drw->fonts->h / 9;
+	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
   int tagscheme = SchemeNorm;
 	Client *c;
@@ -2385,8 +2385,8 @@ setup(void)
 	drw = drw_create(dpy, screen, root, sw, sh);
 	if (!drw_font_create(drw, font))
 		die("no fonts could be loaded.");
-	lrpad = drw->font->h + horizpadbar;
-	bh = drw->font->h + 2 + vertpadbar;
+	lrpad = drw->fonts->h + horizpadbar;
+	bh = drw->fonts->h + 2 + vertpadbar;
 	sp = sidepad;
 	vp = (topbar == 1) ? vertpad : - vertpad;
 	updategeom();

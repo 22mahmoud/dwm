@@ -45,7 +45,7 @@ drw_free(Drw *drw)
 {
 	XFreePixmap(drw->dpy, drw->drawable);
 	XFreeGC(drw->dpy, drw->gc);
-	drw_font_free(drw->font);
+	drw_fontset_free(drw->fonts);
 	free(drw);
 }
 
@@ -74,7 +74,7 @@ xfont_create(Drw *drw, const char *fontname)
 	font->layout = pango_layout_new(context);
 	pango_layout_set_font_description(font->layout, desc);
 
-	metrics = pango_context_get_metrics(context, desc, NULL);
+	metrics = pango_context_get_metrics(context, desc, pango_language_from_string ("en-us"));
 	font->h = pango_font_metrics_get_height(metrics) / PANGO_SCALE;
 
 	pango_font_metrics_unref(metrics);
@@ -103,11 +103,11 @@ drw_font_create(Drw* drw, const char font[])
 
 	fnt = xfont_create(drw, font);
 
-	return (drw->font = fnt);
+	return (drw->fonts = fnt);
 }
 
 void
-drw_font_free(Fnt *font)
+drw_fontset_free(Fnt *font)
 {
 	if (font) {
 		xfont_free(font);
@@ -187,17 +187,17 @@ int
 drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lpad, const char *text, int invert, Bool markup)
 {
 	char buf[1024];
-	int ty, th;
+	int i, ty, th;
 	unsigned int ew, eh;
 	XftDraw *d = NULL;
-	size_t i, len;
+	size_t len;
 	int render = x || y || w || h;
 
-	if (!drw || (render && !drw->scheme) || !text || !drw->font)
+	if (!drw || (render && !drw->scheme) || !text || !drw->fonts)
 		return 0;
 
 	if (!render) {
-		w = invert ? invert : ~invert;
+		w = ~w;
 	} else {
 		XSetForeground(drw->dpy, drw->gc, drw->scheme[invert ? ColFg : ColBg].pixel);
 		XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w, h);
@@ -213,11 +213,11 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 	len = strlen(text);
 
 	if (len) {
-		drw_font_getexts(drw->font, text, len, &ew, &eh, markup);
+		drw_font_getexts(drw->fonts, text, len, &ew, &eh, markup);
 		th = eh;
 		/* shorten text if necessary */
 		for (len = MIN(len, sizeof(buf) - 1); len && ew > w; len--) {
-			drw_font_getexts(drw->font, text, len, &ew, &eh, markup);
+			drw_font_getexts(drw->fonts, text, len, &ew, &eh, markup);
 			if (eh > th)
 				th = eh;
 		}
@@ -231,20 +231,19 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 
 			if (render) {
 				ty = y + (h - th) / 2;
-				if(markup)
-					pango_layout_set_markup(drw->font->layout, buf, len);
+				if (markup)
+					pango_layout_set_markup(drw->fonts->layout, buf, len);
 				else
-					pango_layout_set_text(drw->font->layout, buf, len);
+					pango_layout_set_text(drw->fonts->layout, buf, len);
 				pango_xft_render_layout(d, &drw->scheme[invert ? ColBg : ColFg],
-					drw->font->layout, x * PANGO_SCALE, ty * PANGO_SCALE);
-				if(markup) /* clear markup attributes */
-					pango_layout_set_attributes(drw->font->layout, NULL);
+					drw->fonts->layout, x * PANGO_SCALE, ty * PANGO_SCALE);
+				if (markup) /* clear markup attributes */
+					pango_layout_set_attributes(drw->fonts->layout, NULL);
 			}
 			x += ew;
 			w -= ew;
 		}
 	}
-
 	if (d)
 		XftDrawDestroy(d);
 
@@ -262,9 +261,9 @@ drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h)
 }
 
 unsigned int
-drw_font_getwidth(Drw *drw, const char *text, Bool markup)
+drw_fontset_getwidth(Drw *drw, const char *text, Bool markup)
 {
-	if (!drw || !drw->font || !text)
+	if (!drw || !drw->fonts || !text)
 		return 0;
 	return drw_text(drw, 0, 0, 0, 0, 0, text, 0, markup);
 }
@@ -276,12 +275,12 @@ drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned int *w,
 		return;
 
 	PangoRectangle r;
-	if(markup)
+	if (markup)
 		pango_layout_set_markup(font->layout, text, len);
 	else
 		pango_layout_set_text(font->layout, text, len);
 	pango_layout_get_extents(font->layout, 0, &r);
-	if(markup) /* clear markup attributes */
+	if (markup) /* clear markup attributes */
 		pango_layout_set_attributes(font->layout, NULL);
 	if (w)
 		*w = r.width / PANGO_SCALE;
