@@ -183,9 +183,11 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static float mfact = 0.55;  /* factor of master area size [0.05..0.95] */
-static int nmaster = 1;     /* number of clients in master area */
-static int resizehints = 1; /* 1 means respect size hints in tiled resizals */
+static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static int nmaster     = 1;    /* number of clients in master area */
+static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+static int refreshrate = 144;  /* refresh rate (per second) for client move/resize */
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -250,6 +252,8 @@ ResourcePref resources[] = {
     {"nmaster", INTEGER, &nmaster},
     {"resizehints", INTEGER, &resizehints},
     {"mfact", FLOAT, &mfact},
+    {"lockfullscreen", INTEGER, &lockfullscreen},
+    {"refreshrate", INTEGER, &refreshrate},
 
     {"showtitle", INTEGER, &showtitle},
     {"vertpad", INTEGER, &vertpad},
