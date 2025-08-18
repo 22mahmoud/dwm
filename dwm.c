@@ -1206,14 +1206,18 @@ drawbar(Monitor *m)
 
 	if ((w = m->ww - tw - stw - x) > bh) {
 		if (m->sel && m->showtitle) {
-      drw_setscheme(m == selmon ? drw : NULL, scheme[m->sel->isfloating  ? SchemeTitleFloat : SchemeTitle]);
+			drw_setscheme(m == selmon ? drw : NULL, scheme[m->sel->isfloating  ? SchemeTitleFloat : SchemeTitle]);
+			XSetErrorHandler(xerrordummy);
 			drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0, False);
+			XSync(dpy, False);
+			XSetErrorHandler(xerror);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 			if (m->sel->issticky)
 				drw_polygon(drw, x + boxs, m->sel->isfloating ? boxs * 2 + boxw : boxs, stickyiconbb.x, stickyiconbb.y, boxw, boxw * stickyiconbb.y / stickyiconbb.x, stickyicon, LENGTH(stickyicon), Nonconvex, m->sel->tags & m->tagset[m->seltags]);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
+			XSetErrorHandler(xerrordummy);
 			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
 		}
 	}
